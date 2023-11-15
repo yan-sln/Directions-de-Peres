@@ -5,7 +5,7 @@ Created on Sat Oct  7 11:01:31 2023
 @author: yan-s
 """
 
-## Ajout des bibliothèques nécessaires
+## Ajout des bibliothèques et fonctions nécessaires
 from copy import deepcopy
 import matplotlib.pyplot as plt
 from numpy import array, radians, sin, cos, argsort, where
@@ -13,45 +13,42 @@ from scipy.spatial import distance
 from itertools import product, combinations
 
 
-## Fonctions de rotation des coordonnées d'un cube
+## Fonctions de rotation des coordonnées d'un cube ##
 
 # Fonction qui effectue une rotation theta sur l'axe X
-def axeX(e, theta):
+def axeX(n, theta):
     """Matrice de rotation en 3D sur l'axe X :
-
 |1     0           0| |x|   |        x        |   |x'|
 |0   cos θ    −sin θ| |y| = |y cos θ − z sin θ| = |y'|
 |0   sin θ     cos θ| |z|   |y sin θ + z cos θ|   |z'|"""
-    vect = [e[0],
-            e[1] * cos(theta) - e[2] * sin(theta),
-            e[1] * sin(theta) + e[2] * cos(theta)]
+    vect = [n[0],
+            n[1] * cos(theta) - n[2] * sin(theta),
+            n[1] * sin(theta) + n[2] * cos(theta)]
     return (vect)
 
 # Fonction qui effectue une rotation theta sur l'axe Y
-def axeY(e, theta):
+def axeY(n, theta):
     """Matrice de rotation en 3D sur l'axe Y :
-
 | cos θ    0   sin θ| |x|   | x cos θ + z sin θ|   |x'|
 |   0      1       0| |y| = |         y        | = |y'|
 |−sin θ    0   cos θ| |z|   |−x sin θ + z cos θ|   |z'|"""
-    vect = [e[0] * cos(theta) + e[2] * sin(theta),
-            e[1],
-            -e[0] * sin(theta) + e[2] * cos(theta)]
+    vect = [n[0] * cos(theta) + n[2] * sin(theta),
+            n[1],
+            -n[0] * sin(theta) + n[2] * cos(theta)]
     return (vect)
 
 # Fonction qui effectue une rotation theta sur l'axe Z
-def axeZ(e, theta):
-    """Matrice de rotation en 3D sur l'axe Z :
-        
+def axeZ(n, theta):
+    """Matrice de rotation en 3D sur l'axe Z :        
 |cos θ   −sin θ   0| |x|   |x cos θ − y sin θ|   |x'|
 |sin θ    cos θ   0| |y| = |x sin θ + y cos θ| = |y'|
 |  0       0      1| |z|   |        z        |   |z'|"""
-    vect = [e[0] * cos(theta) - e[1] * sin(theta),
-            e[0] * sin(theta) + e[1] * cos(theta),
-            e[2]]
+    vect = [n[0] * cos(theta) - n[1] * sin(theta),
+            n[0] * sin(theta) + n[1] * cos(theta),
+            n[2]]
     return (vect)
 
-# Fonction pour créer une nouvelle liste des coordonnées du cube tourner
+# Fonction pour créer une nouvelle liste des coordonnées du cube tourné
 def rotation(axe, theta, CONST_LST_ORIGINE):    
     # Créer une liste à but de contenir les sommets tourné
     cubeTourner = []    
@@ -65,7 +62,7 @@ def rotation(axe, theta, CONST_LST_ORIGINE):
     return cubeTourner
 
 
-## Trouve les 3 points "voisins" de chaque sommet du cube, et pour chaque rajoute un point équidistant
+## Trouve les 3 points "voisins" de chaque sommet du cube, et pour chaque rajoute un point équidistant ##
 
 # Petite fonction qui renvoie les coordonnées d'un point équidistant à 2 autres (utilisé par voisins())
 def equidistant(l1, l2):
@@ -102,7 +99,7 @@ def voisins(sommetsCube):
                 sommetsCube.append(pointEquidistant)
 
 
-## Ramène tous les points sur les faces du cube de base
+## Ramène tous les points sur les faces du cube de base ##
 
 # Renvoie les coefficients d'une équation de plan
 def inPlane(points, d, i):
@@ -148,7 +145,7 @@ def Peres(tousPoints):
     return Peres
 
 
-## Enlève colinéaires + affiche
+## Enlève colinéaires + affiche ##
 
 # Colinéaire ssi xyz = x'y'z' ssi xyz - x'y'z' = 0
 def colineaire(v1, v2):
@@ -174,7 +171,7 @@ def affiche(l):
         print(i, end=',\n')
         
 
-# Méthode
+## Créer la figure ##
 def plotCubesPeres(D, theta, alpha, Peres):
     """Affiche une figure contenant 4 cubes de Peres, avec les 33 directions"""
 
@@ -232,7 +229,7 @@ def plotCubesPeres(D, theta, alpha, Peres):
 
 # Si exécuté en tant que programe principal
 if __name__ == '__main__':
-    ## 1. On définit les variables  
+    ## 1. On définit les variables ##
     
     # Définit la dimension du cube
     d = 1; D = [-d, d]
@@ -241,10 +238,9 @@ if __name__ == '__main__':
     CONST_LST_ORIGINE = [list(tup) for tup in product(D, D, D)]
     
     # Créer une liste des sommets du cube de base
-    cube = deepcopy(CONST_LST_ORIGINE)
+    cube = deepcopy(CONST_LST_ORIGINE)    
     
-    
-    ## 2. On effectue les rotations du cube sur les axes X, Y, Z   
+    ## 2. On effectue les rotations du cube sur les axes X, Y, Z ##  
     
     # On définit l'angle de rotaion
     theta = radians(45)    
@@ -252,20 +248,18 @@ if __name__ == '__main__':
     # On calcul les coordonnées des cubes de rotations
     cubeX = rotation(axeX, theta, CONST_LST_ORIGINE)
     cubeY = rotation(axeY, theta, CONST_LST_ORIGINE)
-    cubeZ = rotation(axeZ, theta, CONST_LST_ORIGINE)
+    cubeZ = rotation(axeZ, theta, CONST_LST_ORIGINE)    
     
-    
-    ## 3. Créer une liste contenant tous les sommets et tous les points équidistants
+    ## 3. Créer une liste contenant tous les sommets et tous les points équidistants ##
     
     # Trouve les points équidistants de chaque sommets et les ajoutes à la liste des sommets de chaques cubes
     voisins(cube); voisins(cubeX); voisins(cubeY); voisins(cubeZ)
     # Créer une liste contenant tous les sommets et tous les points équidistants
     tousPoints = cube + cubeX + cubeY + cubeZ   #len(tousPoints) = 80 (si enlève doublon, 74)
     # Supprime les variables inutilisées
-    del cube, cubeX, cubeY, cubeZ
+    del cube, cubeX, cubeY, cubeZ    
     
-    
-    ## 4. Ramène tous les points sur les 3 faces positives du cube de base, supprime les doublons et affiche les 33 directions de Peres
+    ## 4. Ramène tous les points sur les 3 faces positives du cube de base, supprime les doublons et affiche les 33 directions de Peres ##
     
     # Ramène tous les points sur les 3 faces positives du cube de base
     Peres = Peres(tousPoints)
@@ -276,7 +270,7 @@ if __name__ == '__main__':
     # Affiche les directions de Peres
     affiche(Peres)
     
-    ## 5 Créer la figure et l'affiche
+    ## 5 Créer la figure et l'affiche ##
     
     # Programme dans programme
     plotCubesPeres(D, theta, 0.3, Peres)
