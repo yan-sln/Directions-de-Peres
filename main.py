@@ -140,7 +140,7 @@ def Peres(tousPoints):
             indexes = get_planer_indexes(array(lTemp), inPlane(CONST_LST_ORIGINE, d, i))
             for ii in lTemp[indexes]:
                 ii = list(ii)
-                if (ii not in Peres) and face(ii):    # N'ajoute pas si 2 coordonnées du vecteur négatives => pas sur faces recherchées; #!!!!!!!!!!!!! si pas activé, 40 vecteurs !!!!!!!!!!!!!!!
+                if (ii not in Peres) and face(ii):    # N'ajoute pas si 2 coordonnées du vecteur négatives => pas sur faces recherchées;
                     Peres.append(ii)
     return Peres
 
@@ -185,7 +185,7 @@ def plotCubesPeres(D, theta, alpha, Peres):
     ax.set_xlabel('Axe-X', fontweight ='bold') 
     ax.set_ylabel('Axe-Y', fontweight ='bold') 
     ax.set_zlabel('Axe-Z', fontweight ='bold')
-    # Inverse le sens de Axe-Y pour avoir les vecteurs face à soit
+    # Inverse le sens de Axe-Y pour avoir les vecteurs face à soi
     plt.gca().invert_yaxis()
     
     ## Trace les cubes
@@ -273,4 +273,4 @@ if __name__ == '__main__':
     ## 5 Créer la figure et l'affiche ##
     
     # Programme dans programme
-    plotCubesPeres(D, theta, 0.3, Peres)
+    plotCubesPeres(D, theta, 0.4, Peres)
