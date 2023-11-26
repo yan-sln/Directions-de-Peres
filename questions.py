@@ -106,7 +106,7 @@ ax.set_xlim(-1, 1)
 ax.set_ylim(-1, 1)
 ax.set_zlim(-1, 1)
 # Orientation du point de vue
-ax.view_init(45, 45)
+ax.view_init(20, 43)
 # Définit les labels des axes
 ax.set_xlabel('Axe-X', fontweight='bold')
 ax.set_ylabel('Axe-Y', fontweight='bold')
