@@ -113,6 +113,6 @@ ax.set_ylabel('Axe-Y', fontweight='bold')
 ax.set_zlabel('Axe-Z', fontweight='bold')
 
 for i in arretes:
-    ax.plot3D([i[0][0], i[1][0]], [i[0][1], i[1][1]], [i[0][2], i[1][2]], marker = 'o', label='{d;d\'}')
+    ax.plot3D([i[0][0], i[1][0]], [i[0][1], i[1][1]], [i[0][2], i[1][2]], marker = 'o')
     
 plt.show()
