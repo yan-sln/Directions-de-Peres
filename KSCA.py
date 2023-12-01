@@ -85,7 +85,7 @@ paires = [[[1.0, -0.7071067811865476, -0.7071067811865476], [0.7071067811865475,
           [[0.7071067811865476, 0.7071067811865476, 1.0], [0.0, 1.0, -0.7071067811865475]]]
 from copy import deepcopy
 
-def listAposition(lst, position):
+def listAposition(lst: list, position: list):
     """Transforme liste coordonnées en liste position dans Peres"""
     l = deepcopy(lst)
     
@@ -97,31 +97,42 @@ def listAposition(lst, position):
                     break
     return l
 
-def binInt(n):
-    """ """
+def binInt(n: int):
+    """Renvoie un nombre n en binaire"""
     return [int(x) for x in bin(n)[2:]]
 
-def add33Bits(l, n):
-    """ """
+def add33Bits(l: list, n: int):
+    """Renvoie list binaire sur n bits"""
     for i in range(n):
         if len(l) < n:
             l.insert(0,0)
     return l
 
-## Créer liste triplets correspondant position dans direction
+## Créer listes triplets et paires correspondantes positions dans directions
 tripletsPosition = listAposition(triplets, directionsPeres)
 pairesPosition = listAposition(paires, directionsPeres)
 
-# Boucle tant que somme != 2
+# Variable d'arrêt
 somme = 0
+# Commence à 0
 itr = 0
-while somme != 2:
+# Boucle tant que somme != 2 ou épuisées les 8 589 934 592 possibilitées (2^33)
+while (somme != 2) or (itr == 2**3):
     itr +=1
+    # Génére itr sur 33 bits
     lst33Bin = add33Bits(binInt(itr), 33)
     
-    for idx, i in enumerate(tripletsPosition):
+    # Pour (d; d0; d00) l’un des 16 triplets orthogonaux de P
+    for i in tripletsPosition:
+        # Vérifie alors si (d) + (d0) + (d00) = 2
         if (lst33Bin[int(i[0])] + lst33Bin[int(i[1])] + lst33Bin[int(i[2])]) >=2:
-           print(f'{itr} est le premier nombre avec les vecteurs : {triplets[idx]}')
-           somme = 2
+           print(f'{itr}',end=', ')
+           # Vérifie si (d; d0) est l’une des 24 paires orthogonales de P non déjà présentes dans un triplet orthogonal
+           if [i[0],i[1]] in pairesPosition:
+               # Vérifie si alors ((d); (d0)) = (0; 0)
+               if (lst33Bin[int(i[0])] + lst33Bin[int(i[1])]) == 0:
+                   # Spoiler Alert: Jamais
+                   print('Licorne !')
+                   somme = 2
 
 # Nota Bene: 14.25it/s
