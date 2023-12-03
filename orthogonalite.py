@@ -19,4 +19,4 @@ def orthogonalite(*arg):
             somme += facteur            
         if isclose(somme, 0, rtol=1e-05, atol=1e-08, equal_nan=False):return True
         else:return False
-    else:raise Exception('Vecteurs de taille différentes !')
+    else:raise Exception('Vecteurs de tailles différentes !')
