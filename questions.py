@@ -91,16 +91,14 @@ for i, ii in combinations(directionsPeres, 2):
 from matplotlib import rcParams
 import matplotlib.pyplot as plt
 
-fig = plt.figure()
-ax = plt.axes(projection='3d')
 # Définit taille figure
 rcParams['figure.dpi'] = 300
 rcParams['figure.figsize'] = (100, 100)
 # Créer la figure
-plt.figure(figsize=(20, 15))
+fig = plt.figure(figsize=(20, 15))
 plt.title("Graphe de Peres")
 # Propriétés des axes
-ax = plt.axes(projection="3d")
+ax = plt.axes(projection='3d')
 ax.set_aspect("auto")
 ax.set_xlim(-1, 1)
 ax.set_ylim(-1, 1)
