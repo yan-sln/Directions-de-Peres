@@ -128,7 +128,7 @@ def forceBrute(itr: int, n: int):
             if (lstBin[int(i[0])] + lstBin[int(i[1])] + lstBin[int(i[2])]) == 2:
                 # Permet de vérifier si les 16 triplets vérifient (i)
                 st += 1
-        # Si les 33 triplets valident la condition (i)
+        # Si les 16 triplets valident la condition (i)
         if st == 33:
             print('Condition (i) validée !')
             # Vérifie si (d; d0) est l’une des 24 paires orthogonales de P non déjà présentes dans un triplet orthogonal
