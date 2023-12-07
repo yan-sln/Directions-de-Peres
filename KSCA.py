@@ -142,6 +142,6 @@ def forceBrute(itr: int, n: int):
                         print('Condition (ii) validée !')
                         return f'Licorne en {itr}'
 
-# Avec 0 le nombre de départ, et 33 le nombre de bits                
+# Avec 0+1 le nombre de départ, et 33 le nombre de bits                
 print(forceBrute(0,33))
 # Nota Bene: 10 it/s
