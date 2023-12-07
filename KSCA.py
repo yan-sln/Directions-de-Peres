@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 28 13:20:01 2023
+Created on Sun Nov 26 21:44:10 2023
 
 @author: yan-s
 """
@@ -104,7 +104,7 @@ def binInt(n: int):
     """Renvoie un nombre n en binaire"""
     return [int(x) for x in bin(n)[2:]]
 
-def add33Bits(l: list, n: int):
+def addBits(l: list, n: int):
     """Renvoie list binaire sur n bits"""
     for i in range(n):
         if len(l) < n:
@@ -115,28 +115,33 @@ def add33Bits(l: list, n: int):
 tripletsPosition = listAposition(triplets, directionsPeres)
 pairesPosition = listAposition(paires, directionsPeres)
 
-# Variable d'arrêt
-somme = 0
-# Commence à 0
-itr = 0
-# Boucle tant que somme != 2 ou épuisées les 8 589 934 592 possibilitées (2^33)
-while (somme != 2) and (itr <= (2**33)-1):
-    itr +=1 # Pas la peine
-    # Génére itr sur 33 bits
-    lst33Bin = add33Bits(binInt(itr), 33)
-    # Pour (d; d0; d00) l’un des 16 triplets orthogonaux de P
-    for i in tripletsPosition:
-        # Vérifie alors si (d) + (d0) + (d00) = 2
-        if (lst33Bin[int(i[0])] + lst33Bin[int(i[1])] + lst33Bin[int(i[2])]) >=2:           
-           # Vérifie si (d; d0) est l’une des 24 paires orthogonales de P non déjà présentes dans un triplet orthogonal
-           if [i[0],i[1]] in pairesPosition:
-               # Vérifie si alors ((d); (d0)) = (0; 0)
-               if (lst33Bin[int(i[0])] + lst33Bin[int(i[1])]) == 0:
-                   # Spoiler Alert: Jamais
-                   print('Licorne !')
-                   somme = 2
-           else:
-               # Arrêtes de chercher dans les triplets
-               break
+def forceBrute(itr: int, n: int):
+    # Boucle tant que somme != 33*2 ou épuisées les 8 589 934 592 possibilitées (2^33)
+    while (itr != (2**n)-1):
+        # Variables de suivie (similaire à commencer par n)
+        sp = 0; st = 0; itr +=1
+        # Génére itr en binaire sur n bits
+        lstBin = addBits(binInt(itr), n)        
+        # Pour (d; d0; d00) l’un des 16 triplets orthogonaux de P
+        for i in tripletsPosition:
+            # Vérifie alors si (d) + (d0) + (d00) = 2
+            if (lstBin[int(i[0])] + lstBin[int(i[1])] + lstBin[int(i[2])]) == 2:
+                # Permet de vérifier si les 16 triplets vérifient (i)
+                st += 1
+        # Si les 33 triplets valident la condition (i)
+        if st == 33:
+            print('Condition (i) validée !')
+            # Vérifie si (d; d0) est l’une des 24 paires orthogonales de P non déjà présentes dans un triplet orthogonal
+            for ii in pairesPosition:
+                # Vérifie si ((d); (d0)) = (0; 0)
+                if (lstBin[int(ii[0])], lstBin[int(ii[1])]) != (0,0):
+                    # Permet de vérifier si les 24 paires vérifient (ii)
+                    sp += 1
+                    if sp == 33:
+                        # Spoiler Alert: Jamais
+                        print('Condition (ii) validée !')
+                        return f'Licorne en {itr}'
 
+# Avec 0 le nombre de départ, et 33 le nombre de bits                
+print(forceBrute(0,33))
 # Nota Bene: 10 it/s
