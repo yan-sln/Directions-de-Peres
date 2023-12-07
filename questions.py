@@ -81,36 +81,3 @@ for i in paires:
         # Pour trouver vecteur normal au 2 autres, produit vectoriel
         tripletsSupp.append([list(cross(ii, iii)), ii, iii])
         
-## Question 8:
-arretes = []
-# dans arrete ssi app à paires ou app à triplets
-for i, ii in combinations(directionsPeres, 2):
-    if ([i, ii] in paires) or ([i, ii] in combinations(triplets, 2)):
-        arretes.append([i, ii])
-
-from matplotlib import rcParams
-import matplotlib.pyplot as plt
-
-# Définit taille figure
-rcParams['figure.dpi'] = 300
-rcParams['figure.figsize'] = (100, 100)
-# Créer la figure
-fig = plt.figure(figsize=(20, 15))
-plt.title("Graphe de Peres")
-# Propriétés des axes
-ax = plt.axes(projection='3d')
-ax.set_aspect("auto")
-ax.set_xlim(-1, 1)
-ax.set_ylim(-1, 1)
-ax.set_zlim(-1, 1)
-# Orientation du point de vue
-ax.view_init(20, 43)
-# Définit les labels des axes
-ax.set_xlabel('Axe-X', fontweight='bold')
-ax.set_ylabel('Axe-Y', fontweight='bold')
-ax.set_zlabel('Axe-Z', fontweight='bold')
-
-for i in arretes:
-    ax.plot3D([i[0][0], i[1][0]], [i[0][1], i[1][1]], [i[0][2], i[1][2]], marker = 'o')
-    
-plt.show()
