@@ -5,9 +5,10 @@ Created on Fri Dec  8 17:30:44 2023
 @author: yan-s
 """
 # %% On importe les fonctions nécessaires
+from copy import deepcopy
 from itertools import combinations
 from numpy import cross, isclose, radians
-from Peres33Directions import MatricesRotations as mr
+from Directions_de_Peres3 import MatricesRotations as mr
 
 # %% On récupère la liste des 33 directions de Peres déterminées précédemment
 directionsPeres = [
@@ -62,18 +63,17 @@ def rotaPoint(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
     # Vérifie que bon axe entré
     try:   
         # Créer la liste des points tournés
-        lstRotaPts = []
+        lstRotaPts = deepcopy(lstPoints)
         # Pour tous les points en entré
-        for pt in lstPoints:
+        for idx, pt in enumerate(lstRotaPts):
             # Applique la rotation
             pt = axe(pt, radians(theta))
             # Vérifie que points sur bonne face
             if pt not in lstPoints:
-                print(pt)
                 # Renvoie son symétrique
                 pt = symetrique(pt)
             # Ajoute à la liste
-            lstRotaPts.append(pt)
+            lstRotaPts[idx] = pt
         # Renvoie la liste
         return lstRotaPts
     # Sinon renvoie erreur        
@@ -82,10 +82,10 @@ def rotaPoint(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
 
 # %% If main
 if __name__ == '__main__':
-    from Peres33Directions import TraceDirectionsPeres as tdp
+    from Directions_de_Peres3 import TraceDirectionsPeres as tdp
     
     axe = [mr.axeX, mr.axeY, mr.axeZ]
-    ang = [0, 90, 180, 270, 360]
+    ang = [90, 180, 270]
     
     for i in axe:
         for ii in ang:
