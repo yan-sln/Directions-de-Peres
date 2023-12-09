@@ -82,5 +82,19 @@ def rotaPoint(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
 
 # %% If main
 if __name__ == '__main__':
-    rotaPoint(directionsPeres, 90, mr.axeX)
+    from Peres33Directions import TraceDirectionsPeres as tdp
     
+    axe = [mr.axeX, mr.axeY, mr.axeZ]
+    ang = [0, 90, 180, 270, 360]
+    
+    for i in axe:
+        for ii in ang:
+            # Créer les 
+            rota = rotaPoint(directionsPeres, ii, i)        
+            
+            # Trace Cubes, vecteurs et flêches
+            figure = tdp(rota, f'{i} et {ii}°')
+            figure.traceCubes(1, None, allCubes=False)
+            figure.traceFleches()
+            figure.tracePoints()
+            figure.affiche()
