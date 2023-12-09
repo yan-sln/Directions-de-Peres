@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec  8 17:30:44 2023
+
+@author: yan-s
+"""
 # %% On importe les fonctions nécessaires
 from itertools import combinations
 from numpy import cross, isclose, radians
@@ -52,23 +58,27 @@ def symetrique(l):
 
 # %% Créer une fonction qui effectue une rotation des 33 points sur un axe
 def rotaPoint(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
-    """ """      
-    # Créer la liste des points tournés
-    lstRotaPts = []
-    # Pour tous les points en entré
-    for pt in lstPoints:
-        # Applique la rotation
-        pt = axe(pt, radians(theta))
-        # Vérifie que points sur bonne face
-        if pt not in lstPoints:
-            print(pt)
-            # Renvoie son symétrique
-            pt = symetrique(pt)
-        # Ajoute à la liste
-        lstRotaPts.append(pt)
-    # Renvoie la liste
-    return lstRotaPts
-    
+    """ """    
+    # Vérifie que bon axe entré
+    try:   
+        # Créer la liste des points tournés
+        lstRotaPts = []
+        # Pour tous les points en entré
+        for pt in lstPoints:
+            # Applique la rotation
+            pt = axe(pt, radians(theta))
+            # Vérifie que points sur bonne face
+            if pt not in lstPoints:
+                print(pt)
+                # Renvoie son symétrique
+                pt = symetrique(pt)
+            # Ajoute à la liste
+            lstRotaPts.append(pt)
+        # Renvoie la liste
+        return lstRotaPts
+    # Sinon renvoie erreur        
+    except Exception:
+        raise Exception('Invalide axe')    
 
 # %% If main
 if __name__ == '__main__':
