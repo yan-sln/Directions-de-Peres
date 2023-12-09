@@ -18,7 +18,8 @@ class MatricesRotations:
     """Class contenant des fonctions pour appliquer une matrice de rotation sur les 3 axes X, Y, Z"""
 
     # Fonction qui effectue une rotation theta sur l'axe X
-    def axeX(self, n, theta):
+    @staticmethod
+    def axeX(n, theta):
         """Matrice de rotation en 3D sur l'axe X :
     |1     0           0| |x|   |        x        |   |x'|
     |0   cos θ    −sin θ| |y| = |y cos θ − z sin θ| = |y'|
@@ -29,7 +30,8 @@ class MatricesRotations:
         return (vect)
 
     # Fonction qui effectue une rotation theta sur l'axe Y
-    def axeY(self, n, theta):
+    @staticmethod
+    def axeY(n, theta):
         """Matrice de rotation en 3D sur l'axe Y :
     | cos θ    0   sin θ| |x|   | x cos θ + z sin θ|   |x'|
     |   0      1       0| |y| = |         y        | = |y'|
@@ -40,7 +42,8 @@ class MatricesRotations:
         return (vect)
 
     # Fonction qui effectue une rotation theta sur l'axe Z
-    def axeZ(self, n, theta):
+    @staticmethod
+    def axeZ(n, theta):
         """Matrice de rotation en 3D sur l'axe Z :
     |cos θ   −sin θ   0| |x|   |x cos θ − y sin θ|   |x'|
     |sin θ    cos θ   0| |y| = |x sin θ + y cos θ| = |y'|
@@ -256,7 +259,7 @@ class TraceDirectionsPeres(MatricesRotations):
                     for i in range(3):
                         # Rotation sur l'axe X du cube de Base
                         s_rotated, e_rotated = axe[i](
-                            self, e, theta), axe[i](self, s, theta)
+                            e, theta), axe[i](s, theta)
                         # Créer un cube rouge, puis bleu, puis vert
                         self.ax.plot3D(*zip(s_rotated, e_rotated), color=[
                                        v[i % len(v)], v[(i+1) % len(v)], v[(i+2) % len(v)], alpha])
@@ -298,26 +301,23 @@ class TraceDirectionsPeres(MatricesRotations):
 
 # Si exécuté en tant que programe principal
 if __name__ == '__main__':
-    #
-    d = 1
-    # On définit l'angle de rotaion
-    theta = radians(45)
+    
+    d = 1  # Dimention des cubes
+    theta = radians(45)  # Angle de rotation entre les cubes
 
     # Créer les 33 directions de Peres
-    p = DirectionsPeres(d)
-    Peres = p.main(d)
+    Peres33 = DirectionsPeres(d)
+    Peres = Peres33.main(d)
+    Peres33.affiche(Peres)  # Affiche les directions de Peres
 
-    # Affiche les directions de Peres
-    p.affiche(Peres)
-
-    # Affiche 4 Cubes, vecteurs et flêches
+    # Trace 4 Cubes, vecteurs et flêches
     figure = TraceDirectionsPeres(Peres)
     figure.traceCubes(d, theta, allCubes=True)
     figure.traceFleches()
     figure.tracePoints()
     figure.affiche()
 
-    # Affiche les directions et leurs coordonnées
+    # Trace les directions et leurs coordonnées
     figure2 = TraceDirectionsPeres(Peres)
     figure2.traceCubes(d, theta)
     figure2.tracePoints()
