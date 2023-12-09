@@ -54,7 +54,7 @@ def affiche(l):
         
 def symetrique(l):
     """Renvoie le vecteur inverse"""
-    return [[-l[0],-l[1],-l[2]]]
+    return [-l[0],-l[1],-l[2]]
 
 # %% Créer une fonction qui effectue une rotation des 33 points sur un axe
 def rotaPoint(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
