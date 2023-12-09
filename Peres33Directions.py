@@ -223,7 +223,7 @@ class DirectionsPeres(MatricesRotations):
 class TraceDirectionsPeres(MatricesRotations):
     """Affiche une figure contenant 4 cubes de Peres, avec les 33 directions"""
 
-    def __init__(self, directions):
+    def __init__(self, directions, title="Directions de Peres"):
         # Copie locale des directions
         self.lst = directions
         # Définit taille figure
@@ -231,7 +231,7 @@ class TraceDirectionsPeres(MatricesRotations):
         rcParams['figure.figsize'] = (100, 100)
         # Créer la figure
         plt.figure(figsize=(20, 15))
-        plt.title("Directions de Peres")
+        plt.title(title)
 
         # Propriétés des axes
         self.ax = plt.axes(projection="3d")
