@@ -56,10 +56,6 @@ def affiche(l):
         
 def symetrique(l):
     """Renvoie le vecteur inverse"""
-    return [-l[0],-l[1],-l[2]]
-
-def symetrique2(l):
-    """Renvoie le vecteur inverse"""
     lst = [-l[0],-l[1],-l[2]]
     for idx, i in enumerate(lst):
         # Si nombre près de 0
@@ -82,8 +78,7 @@ def rotation(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
             # Vérifie que points sur bonne face
             if pt not in lstPoints:
                 # Renvoie son symétrique
-                pt = symetrique(pt)     #!!! 18 Graphes
-                #pt = symetrique2(pt)     #!!! 25 graphes
+                pt = symetrique(pt)
             # Ajoute à la liste
             lstRotaPts[idx] = pt
         # Renvoie la liste
@@ -109,7 +104,7 @@ def trace(rota, title= None):
     figure.tracePoints()
     figure.affiche()
 
-def rotaPoint(angle, nbRotaSuite, trace=False):
+def rotaPoint(angle, nbRotaSuite, boolTrace=False):
     """ """
     # Défini les 3 rotations d'axes
     axe = [mr.axeX, mr.axeY, mr.axeZ]
@@ -123,7 +118,7 @@ def rotaPoint(angle, nbRotaSuite, trace=False):
         for ii in i:
             # Créer une rotation
             rota = rotation(rota, angle, ii)
-        # On l'ajoute à la liste des rotations
+        # On ajoute les rotations à la liste
         lstRota.append(rota)
         # Puis on vérifie si elle n'existe pas déjà
         for iii in lstRota[:-1]:
@@ -131,7 +126,7 @@ def rotaPoint(angle, nbRotaSuite, trace=False):
             if quitEgal(rota, iii):
                 # La supprime de la liste
                 lstRota.remove(rota)    
-        if trace:
+        if boolTrace:
             trace(rota) # nbRotaSuite**nbRotaSuite figures
     # Renvoie la liste des rotations
     return lstRota    
@@ -144,4 +139,6 @@ if __name__ == '__main__':
     nbRotaSuite = 3
     
     # Forme la liste des coordonnées crées (sans rotation)
-    lstRota = rotaPoint(angle, nbRotaSuite)
+    lstRota = rotaPoint(angle, nbRotaSuite, True)
+    print(f'Il y a {len(lstRota)} graphes.')
+    
