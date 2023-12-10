@@ -80,8 +80,11 @@ def symetrique(l):
 
 def write(l: list, file:str, mode:str) -> 'Write list in file':
     with open(file, mode) as txt:
-        for i in l:
-            txt.write(i, end=',\n')
+        for idx, i in enumerate(l):
+            txt.write(f'Liste {idx+1} :\n')
+            for ii in i:
+                txt.write(str(ii)+'\n')
+            txt.write('\n')
             
 # %% Créer une fonction qui effectue une rotation des 33 points sur un axe
 def rotation(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
