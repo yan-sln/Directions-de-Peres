@@ -7,11 +7,11 @@ Created on Fri Dec  8 17:30:44 2023
 # %% On importe les fonctions nécessaires
 from copy import deepcopy
 from itertools import product
-from numpy import radians, isclose
+from numpy import radians, isclose, sqrt
 from Directions_de_Peres3 import MatricesRotations as mr
 from Directions_de_Peres3 import TraceDirectionsPeres as tdp
 
-# %% On récupère la liste des 33 directions de Peres déterminées précédemment
+# %% On récupère la liste des 33 directions de Peres déterminée précédemment
 directionsPeres = [
     [1.0, 0.0, 1.0],
     [1.0, 1.0, 0.0],
@@ -53,17 +53,36 @@ def affiche(l):
     print(f'Il y a {len(l)} éléments qui sont : ')
     for i in l:
         print(i, end=',\n')
+
+def miniSim(n, lst, idx, i):
+    # Si nombre près de n
+    if isclose(i, n, rtol=1e-05, atol=1e-08, equal_nan=False):
+        # Devient n
+        lst[idx] = n
         
 def symetrique(l):
-    """Renvoie le vecteur inverse"""
+    """Renvoie le vecteur inverse et lisse les coordonnées"""
     lst = [-l[0],-l[1],-l[2]]
+    # Permet de "lisser" les coordonnées
     for idx, i in enumerate(lst):
         # Si nombre près de 0
-        if isclose(i, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
-            # Devient 0
-            lst[idx] = 0
+        miniSim(0, lst, idx, i)
+        # Si nombre près de 1
+        miniSim(1, lst, idx, i)
+        # Si nombre près de -1
+        miniSim(-1, lst, idx, i)
+        # Si nombre près de sqrt(2)/2
+        miniSim(sqrt(2)/2, lst, idx, i)
+        # Si nombre près de -sqrt(2)/2
+        miniSim(-sqrt(2)/2, lst, idx, i)
+    # Renvoie la liste
     return lst
 
+def write(l: list, file:str, mode:str) -> 'Write list in file':
+    with open(file, mode) as txt:
+        for i in l:
+            txt.write(i, end=',\n')
+            
 # %% Créer une fonction qui effectue une rotation des 33 points sur un axe
 def rotation(lstPoints: list, theta: float, axe: str) -> 'pt rotate':
     """ """    
@@ -129,7 +148,7 @@ def rotaPoint(angle, nbRotaSuite, boolTrace=False):
         if boolTrace:
             trace(rota) # nbRotaSuite**nbRotaSuite figures
     # Renvoie la liste des rotations
-    return lstRota    
+    return lstRota[1:]    
 
 # %% If main
 if __name__ == '__main__':    
@@ -139,6 +158,6 @@ if __name__ == '__main__':
     nbRotaSuite = 3
     
     # Forme la liste des coordonnées crées (sans rotation)
-    lstRota = rotaPoint(angle, nbRotaSuite, True)
+    lstRota = rotaPoint(angle, nbRotaSuite, False)
     print(f'Il y a {len(lstRota)} graphes.')
     
