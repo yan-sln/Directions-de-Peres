@@ -94,11 +94,11 @@ for i in paires:
         tripletsSupp.append([lbda(list(cross(ii, iii)), 1), ii, iii])
         
 # %% Question 8:
-arretes = paires[:]
+aretes = paires[:]
 # dans arrete ssi app à paires ou app à triplets
 for i in triplets:
     for ii, iii in combinations(i, 2):
-        arretes.append([ii, iii])
+        aretes.append([ii, iii])
 
 from matplotlib import rcParams
 import matplotlib.pyplot as plt
@@ -122,7 +122,7 @@ ax.set_xlabel('Axe-X', fontweight='bold')
 ax.set_ylabel('Axe-Y', fontweight='bold')
 ax.set_zlabel('Axe-Z', fontweight='bold')
 
-for i in arretes:
+for i in aretes:
     ax.plot3D([i[0][0], i[1][0]], [i[0][1], i[1][1]], [i[0][2], i[1][2]], marker = 'o')
     
 plt.show()
