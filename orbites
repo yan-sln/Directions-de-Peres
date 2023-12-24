@@ -1,0 +1,20 @@
+#
+
+rotations=[]
+x=y=z=0 # Initialisation
+while(x<4):
+    y=0
+    while(y<4):
+        z=0
+        while(z<4):
+            rotations.append([x,y,z])
+            z=z+1
+        y=y+1
+    x=x+1
+print(rotations)
+
+# On crée maintenant l'ensemble des symétriques
+
+Ds = []
+for i in range (len(D)): # Et on crée Ds
+    Ps.append([D[i],[-D[i][0],-D[i][1],-D[i][2]]])
