@@ -1,0 +1,25 @@
+from math import*
+
+D =[...] # On récupère nos trés chères listes
+T=[...]
+P=[...]
+
+U=[] # U pour uplet
+for i in range(len(T)):
+    U.append(T[i])
+#for i in range(len(P)):
+#    U.append(P[i])
+
+# On a commenté cette 2ème partie pour se limiter aux triplets seuls: U=T
+
+def sigma(d):
+    sigma=[]
+    for i in range(len(U)):
+        if d in U[i]:
+            sigma.append(U[i]) # On met dans s tous les elements des uplets dans lequels on trouve d
+    return(sigma)
+
+listeCardSigma=[]
+for i in range(len(D)):
+    listeCardSigma.append(len(sigma(D[i])))
+print(listeCardSigma)
