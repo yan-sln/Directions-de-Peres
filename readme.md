@@ -14,4 +14,10 @@
 
 ![Graphe](https://github.com/Toppics/Directions-de-Peres/assets/110732997/4187a8d6-f923-43a7-ab22-47fa505911a3)
 
-- [ ] Démontre le lemme KSCA par force brute : [ForceBrute.py]([https://github.com/Toppics/Sine-Saloum/](https://github.com/Toppics/Directions-de-Peres/blob/main/ForceBrute.py))
+- [ ] Démontre le lemme KSCA par force brute : [ForceBrute.py](https://github.com/Toppics/Directions-de-Peres/blob/main/ForceBrute.py)
+
+- [ ] Convertisseur de coordonnées python -> SageMath : [convertisseur.py](https://github.com/Toppics/Directions-de-Peres/blob/main/convertisseur.py)
+
+- [ ] Abramsky : [abramsky.py](https://github.com/Toppics/Directions-de-Peres/blob/main/abramsky.py)
+
+- [ ] Calcule les orbites : [orbites.py](https://github.com/Toppics/Directions-de-Peres/blob/main/orbites.py)
