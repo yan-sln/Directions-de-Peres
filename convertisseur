@@ -1,3 +1,6 @@
+# Ce programme permet de convertir des listes contenant des valeurs arrondies en listes contenant des valeurs exactes
+# On met la liste à convertir dans la liste liste (ici, on a utilisé la liste D comme exemple)
+
 liste=[
  [1.00000000000000, 0.000000000000000, 1.00000000000000],
  [1.00000000000000, 1.00000000000000, 0.000000000000000],
