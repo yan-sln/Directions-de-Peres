@@ -2,68 +2,107 @@
 """
 Created on Thu Dec  7 09:40:07 2023
 
-@author: yan-s
+Author: yan-s
+
+This script builds the orthogonality graph of Peres' 33 directions.
+Nodes correspond to the directions, edges represent orthogonality relations.
 """
 
-from matplotlib import rcParams
-from itertools import combinations
-from copy import deepcopy
 import matplotlib.pyplot as plt
 import networkx as nx
+from itertools import combinations
+from copy import deepcopy
+from matplotlib import rcParams
 
-# On importe la liste des 33 directions de Peres déterminées précédemment
-directionsPeres = [[1.0, 0.0, 1.0],[1.0, 1.0, 0.0],[1.0, -0.7071067811865476, -0.7071067811865476],[1.0, 0.7071067811865476, -0.7071067811865476],[1.0, -0.7071067811865476, 0.7071067811865476],[1.0, 0.7071067811865476, 0.7071067811865476],[1.0, -0.7071067811865475, 0.0],[1.0, 0.7071067811865475, 0.0],[1.0, 0.0, 0.0],[1.0, 0.0, -0.7071067811865475],[1.0, 0.0, 0.7071067811865475],[-1.0, 0.0, 1.0],[0.0, -1.0, 1.0],[0.0, 1.0, 1.0],[-0.7071067811865475, 0.0, 1.0],[0.7071067811865475, 0.0, 1.0],[0.0, 0.0, 1.0],[0.0, -0.7071067811865475, 1.0],[0.0, 0.7071067811865475, 1.0],[-0.7071067811865476, -0.7071067811865476, 1.0],[0.7071067811865476, -0.7071067811865476, 1.0],[-0.7071067811865476, 0.7071067811865476, 1.0],[0.7071067811865476, 0.7071067811865476, 1.0],[-1.0, 1.0, 0.0],[-0.7071067811865475, 1.0, 0.0],[0.7071067811865475, 1.0, 0.0],[0.0, 1.0, 0.0],[-0.7071067811865476, 1.0, 0.7071067811865476],[-0.7071067811865476, 1.0, -0.7071067811865476],[0.7071067811865476, 1.0, 0.7071067811865476],[0.7071067811865476, 1.0, -0.7071067811865476],[0.0, 1.0, -0.7071067811865475],[0.0, 1.0, 0.7071067811865475]]
-# On importe la liste des 16 triplets déterminées précédemment
+# --- Data (hardcoded here, but should ideally be imported from a shared module) ---
+directionsPeres = [
+    [1.0, 0.0, 1.0], [1.0, 1.0, 0.0],
+    [1.0, -0.7071067811865476, -0.7071067811865476],
+    [1.0, 0.7071067811865476, -0.7071067811865476],
+    [1.0, -0.7071067811865476, 0.7071067811865476],
+    [1.0, 0.7071067811865476, 0.7071067811865476],
+    [1.0, -0.7071067811865475, 0.0],
+    [1.0, 0.7071067811865475, 0.0],
+    [1.0, 0.0, 0.0],
+    [1.0, 0.0, -0.7071067811865475],
+    [1.0, 0.0, 0.7071067811865475],
+    [-1.0, 0.0, 1.0],
+    [0.0, -1.0, 1.0], [0.0, 1.0, 1.0],
+    [-0.7071067811865475, 0.0, 1.0], [0.7071067811865475, 0.0, 1.0],
+    [0.0, 0.0, 1.0],
+    [0.0, -0.7071067811865475, 1.0], [0.0, 0.7071067811865475, 1.0],
+    [-0.7071067811865476, -0.7071067811865476, 1.0],
+    [0.7071067811865476, -0.7071067811865476, 1.0],
+    [-0.7071067811865476, 0.7071067811865476, 1.0],
+    [0.7071067811865476, 0.7071067811865476, 1.0],
+    [-1.0, 1.0, 0.0],
+    [-0.7071067811865475, 1.0, 0.0], [0.7071067811865475, 1.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [-0.7071067811865476, 1.0, 0.7071067811865476],
+    [-0.7071067811865476, 1.0, -0.7071067811865476],
+    [0.7071067811865476, 1.0, 0.7071067811865476],
+    [0.7071067811865476, 1.0, -0.7071067811865476],
+    [0.0, 1.0, -0.7071067811865475], [0.0, 1.0, 0.7071067811865475]
+]
+
 triplets = [[[1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [0.0, 1.0, 0.0]],[[1.0, 0.0, 1.0], [-0.7071067811865476, 1.0, 0.7071067811865476],[0.7071067811865476, 1.0, -0.7071067811865476]],[[1.0, 1.0, 0.0], [0.0, 0.0, 1.0], [-1.0, 1.0, 0.0]],[[1.0, 1.0, 0.0], [0.7071067811865476, -0.7071067811865476, 1.0],[-0.7071067811865476, 0.7071067811865476, 1.0]],[[1.0, -0.7071067811865476, -0.7071067811865476],[1.0, 0.7071067811865476, 0.7071067811865476], [0.0, -1.0, 1.0]],[[1.0, 0.7071067811865476, -0.7071067811865476],[1.0, -0.7071067811865476, 0.7071067811865476], [0.0, 1.0, 1.0]],[[1.0, -0.7071067811865475, 0.0], [0.0, 0.0, 1.0],[0.7071067811865475, 1.0, 0.0]],[[1.0, 0.7071067811865475, 0.0], [0.0, 0.0, 1.0],[-0.7071067811865475, 1.0, 0.0]],[[1.0, 0.0, 0.0], [0.0, -1.0, 1.0], [0.0, 1.0, 1.0]],[[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0]],[[1.0, 0.0, 0.0], [0.0, -0.7071067811865475, 1.0],[0.0, 1.0, 0.7071067811865475]],[[1.0, 0.0, 0.0], [0.0, 0.7071067811865475, 1.0],[0.0, 1.0, -0.7071067811865475]],[[1.0, 0.0, -0.7071067811865475], [0.7071067811865475, 0.0, 1.0], [0.0, 1.0, 0.0]],[[1.0, 0.0, 0.7071067811865475], [-0.7071067811865475, 0.0, 1.0], [0.0, 1.0, 0.0]],[[-1.0, 0.0, 1.0], [-0.7071067811865476, 1.0, -0.7071067811865476],[0.7071067811865476, 1.0, 0.7071067811865476]],[[-0.7071067811865476, -0.7071067811865476, 1.0], [0.7071067811865476, 0.7071067811865476, 1.0], [-1.0, 1.0, 0.0]]]
-# On importe la liste des 24 paires non déjà présentes dans triplets déterminées précédemment
+
 paires = [[[1.0, -0.7071067811865476, -0.7071067811865476], [0.7071067811865475, 0.0, 1.0]],[[1.0, -0.7071067811865476, -0.7071067811865476], [0.7071067811865475, 1.0, 0.0]],[[1.0, 0.7071067811865476, -0.7071067811865476], [0.7071067811865475, 0.0, 1.0]],[[1.0, 0.7071067811865476, -0.7071067811865476],[-0.7071067811865475, 1.0, 0.0]],[[1.0, -0.7071067811865476, 0.7071067811865476],[-0.7071067811865475, 0.0, 1.0]],[[1.0, -0.7071067811865476, 0.7071067811865476], [0.7071067811865475, 1.0, 0.0]],[[1.0, 0.7071067811865476, 0.7071067811865476], [-0.7071067811865475, 0.0, 1.0]],[[1.0, 0.7071067811865476, 0.7071067811865476], [-0.7071067811865475, 1.0, 0.0]],[[1.0, -0.7071067811865475, 0.0], [0.7071067811865476, 1.0, 0.7071067811865476]],[[1.0, -0.7071067811865475, 0.0], [0.7071067811865476, 1.0, -0.7071067811865476]],[[1.0, 0.7071067811865475, 0.0], [-0.7071067811865476, 1.0, 0.7071067811865476]],[[1.0, 0.7071067811865475, 0.0], [-0.7071067811865476, 1.0, -0.7071067811865476]],[[1.0, 0.0, -0.7071067811865475], [0.7071067811865476, -0.7071067811865476, 1.0]],[[1.0, 0.0, -0.7071067811865475], [0.7071067811865476, 0.7071067811865476, 1.0]],[[1.0, 0.0, 0.7071067811865475], [-0.7071067811865476, -0.7071067811865476, 1.0]],[[1.0, 0.0, 0.7071067811865475], [-0.7071067811865476, 0.7071067811865476, 1.0]],[[0.0, -0.7071067811865475, 1.0], [-0.7071067811865476, 1.0, 0.7071067811865476]],[[0.0, -0.7071067811865475, 1.0], [0.7071067811865476, 1.0, 0.7071067811865476]],[[0.0, 0.7071067811865475, 1.0], [-0.7071067811865476, 1.0, -0.7071067811865476]],[[0.0, 0.7071067811865475, 1.0], [0.7071067811865476, 1.0, -0.7071067811865476]],[[-0.7071067811865476, -0.7071067811865476, 1.0], [0.0, 1.0, 0.7071067811865475]],[[0.7071067811865476, -0.7071067811865476, 1.0], [0.0, 1.0, 0.7071067811865475]],[[-0.7071067811865476, 0.7071067811865476, 1.0],[0.0, 1.0, -0.7071067811865475]],[[0.7071067811865476, 0.7071067811865476, 1.0], [0.0, 1.0, -0.7071067811865475]]]
 
-def listAposition(lst: list, position: list):
-    """Transforme liste coordonnées en liste position dans Peres"""
-    l = deepcopy(lst)
+# --- Utility: map coordinates -> index ---
+def list_to_positions(lst: list, reference: list) -> list:
+    """
+    Replace coordinates with their index in the reference list.
 
-    for idx, i in enumerate(lst):
-        for iidx, ii in enumerate(i):
-            for iiidx, iii in enumerate(position):
-                if ii == iii:
-                    l[idx][iidx] = iiidx
-                    break
-    return l
+    Parameters
+    ----------
+    lst : list of lists (triplets or pairs of vectors)
+    reference : list of vectors
 
-# Créer listes triplets et paires correspondantes positions dans directions
-tripletsPosition = listAposition(triplets, directionsPeres)
-pairesPosition = listAposition(paires, directionsPeres)
+    Returns
+    -------
+    list of lists (same structure, but with indices instead of vectors)
+    """
+    index_map = {tuple(v): i for i, v in enumerate(reference)}
+    return [[index_map[tuple(v)] for v in group] for group in lst]
 
-# Forme les arêtes entre les noeuds
-aretes = pairesPosition[:]
-# dans arrete ssi app à paires ou app à triplets
-for i in tripletsPosition:
-    for ii, iii in combinations(i, 2):
-        aretes.append([ii, iii])
+# --- Convert triplets/pairs into indices ---
+triplets_pos = list_to_positions(triplets, directionsPeres)
+paires_pos = list_to_positions(paires, directionsPeres)
 
-# On créer le graphe
+# --- Build edge list (avoid duplicates using set) ---
+edges = set()
+for pair in paires_pos:
+    edges.add(frozenset(pair))
+for triplet in triplets_pos:
+    for u, v in combinations(triplet, 2):
+        edges.add(frozenset([u, v]))
+
+# --- Build graph ---
 G = nx.Graph()
-# On y rajoute chaque paire de noeuds
-for i in aretes:
-    G.add_edge(i[0], i[1])
+for e in edges:
+    u, v = tuple(e)
+    G.add_edge(u, v)
 
-# Option de traçage du graphe
-options = {"font_size": 1, "node_size": 10, "node_color": "black",
-           "linewidths": 1, "width": 0.5}
-# On définit la position des noeuds
+# --- Plotting options ---
+rcParams['figure.dpi'] = 150
+plt.figure(figsize=(15, 15))
+plt.title("Orthogonality graph of Peres' 33 directions")
+
+# Choose layout (spring_layout gives more symmetric results than circular)
 pos = nx.circular_layout(G)
-# On trace le graphe
-nx.draw_networkx(G, pos, **options)
 
-# Définit taille figure
-rcParams['figure.dpi'] = 100
-rcParams['figure.figsize'] = (25, 25)
-# Créer une figure du graph
-ax = plt.gca()
-ax.margins(0.20)
-plt.title("Graphe")
+nx.draw_networkx(
+    G, pos,
+    node_size=80, node_color="black",
+    edge_color="gray",
+    with_labels=False,
+    width=0.7
+)
+
 plt.axis("off")
 plt.show()
 
-# Affiche si le graphe est planaire
-print(nx.is_planar(G))
+# --- Planarity check ---
+is_planar, embedding = nx.check_planarity(G, counterexample=False)
+print("Is the graph planar?", is_planar)
