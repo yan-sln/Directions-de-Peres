@@ -1,4 +1,4 @@
-# Free Will Theorem Project
+# Free Will Theorem
 
 This repository gathers a collection of Python scripts dedicated to the study of the **Free Will Theorem** of Conway & Kochen.  
 The project focuses on **Peres’ 33 directions**, their orthogonality relations, and the **Kochen–Specker–Conway–Abramsky (KSCA) lemma**, with both computational and graphical explorations.
