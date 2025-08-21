@@ -2,7 +2,10 @@
 """
 Created on Sun Nov 26 21:44:10 2023
 
-@author: yan-s
+Author: yan-s
+
+Brute-force exploration of binary assignments for Peres' 33 directions.
+Checks orthogonality constraints on 16 triplets and 24 pairs.
 """
 
 # On récupère la liste des 33 directions de Peres déterminées précédemment
@@ -86,62 +89,60 @@ paires = [
 [[0.7071067811865476, -0.7071067811865476, 1.0], [0.0, 1.0, 0.7071067811865475]],
 [[-0.7071067811865476, 0.7071067811865476, 1.0], [0.0, 1.0, -0.7071067811865475]],
 [[0.7071067811865476, 0.7071067811865476, 1.0], [0.0, 1.0, -0.7071067811865475]]]
-from copy import deepcopy
 
-def listAposition(lst: list, position: list):
-    """Transforme liste coordonnées en liste position dans Peres"""
-    l = deepcopy(lst)
-    
-    for idx, i in enumerate(lst):
-        for iidx, ii in enumerate(i):
-            for iiidx, iii in enumerate(position):
-                if ii == iii:
-                    l[idx][iidx] = iiidx
-                    break
-    return l
+def list_to_positions(lst: list, reference: list):
+    """
+    Replace each vector in lst by its index in the reference list.
+    Faster than nested loops thanks to a lookup dictionary.
+    """
+    index_map = {tuple(v): i for i, v in enumerate(reference)}
+    return [[index_map[tuple(v)] for v in group] for group in lst]
 
-def binInt(n: int):
-    """Renvoie un nombre n en binaire"""
-    return [int(x) for x in bin(n)[2:]]
+def int_to_bin_list(n: int, length: int) -> list:
+    """
+    Convert integer to binary list of fixed length.
+    Example: int_to_bin_list(5, 4) -> [0, 1, 0, 1]
+    """
+    return [int(x) for x in bin(n)[2:].zfill(length)]
 
-def addBits(l: list, n: int):
-    """Renvoie list binaire sur n bits"""
-    for i in range(n):
-        if len(l) < n:
-            l.insert(0,0)
-    return l
+# Convert triplets and pairs to index form
+tripletsPosition = list_to_positions(triplets, directionsPeres)
+pairesPosition = list_to_positions(paires, directionsPeres)
 
-## Créer listes triplets et paires correspondantes positions dans directions
-tripletsPosition = listAposition(triplets, directionsPeres)
-pairesPosition = listAposition(paires, directionsPeres)
+def force_brute(start: int, n: int):
+    """
+    Exhaustively search binary assignments of length n.
+    Condition (i): each triplet sums to exactly 2.
+    Condition (ii): no pair is (0,0).
+    """
+    max_val = (2**n) - 1
+    itr = start
 
-def forceBrute(itr: int, n: int):
-    # Boucle tant que somme != 33*2 ou épuisées les 8 589 934 592 possibilitées (2^33)
-    while (itr != (2**n)-1):
-        # Variables de suivie (similaire à commencer par n)
-        sp = 0; st = 0; itr +=1
-        # Génére itr en binaire sur n bits
-        lstBin = addBits(binInt(itr), n)        
-        # Pour (d; d0; d00) l’un des 16 triplets orthogonaux de P
-        for i in tripletsPosition:
-            # Vérifie alors si (d) + (d0) + (d00) = 2
-            if (lstBin[int(i[0])] + lstBin[int(i[1])] + lstBin[int(i[2])]) == 2:
-                # Permet de vérifier si les 16 triplets vérifient (i)
+    while itr < max_val:
+        itr += 1
+        sp = 0  # counter for valid pairs
+        st = 0  # counter for valid triplets
+
+        # Current assignment as binary list
+        lstBin = int_to_bin_list(itr, n)
+
+        # --- Condition (i): check triplets ---
+        for t in tripletsPosition:
+            if sum(lstBin[idx] for idx in t) == 2:
                 st += 1
-        # Si les 16 triplets valident la condition (i)
-        if st == 16:
-            print('Condition (i) validée !')
-            # Vérifie si (d; d0) est l’une des 24 paires orthogonales de P non déjà présentes dans un triplet orthogonal
-            for ii in pairesPosition:
-                # Vérifie si ((d); (d0)) = (0; 0)
-                if (lstBin[int(ii[0])], lstBin[int(ii[1])]) != (0,0):
-                    # Permet de vérifier si les 24 paires vérifient (ii)
-                    sp += 1
-                    if sp == 24:
-                        # Spoiler Alert: Jamais
-                        print('Condition (ii) validée !')
-                        return f'Licorne en {itr}'
 
-# Avec 0+1 le nombre de départ, et 33 le nombre de bits                
-print(forceBrute(0,33))
-# Nota Bene: 10 it/s
+        if st == len(tripletsPosition):
+            print("Condition (i) satisfied!")
+            # --- Condition (ii): check pairs ---
+            for p in pairesPosition:
+                if not (lstBin[p[0]] == 0 and lstBin[p[1]] == 0):
+                    sp += 1
+            if sp == len(pairesPosition):
+                print("Condition (ii) satisfied!")
+                return f"Solution found at iteration {itr}"
+
+    return None  # no solution
+
+# Run the brute-force search (starting from 0, 33 bits)
+print(force_brute(0, 33))
+# Nota Bene: ~10 iterations per second (infeasible for 2^33 search space)
