@@ -1,6 +1,6 @@
-from math import *
+from math import sqrt
 
-# On importe nos listes, en valeur exactes grâce au programme convertisseur
+# --- Data ---
 
 D=[[1, 0, 1], [1, 1, 0], [1, -1/2*sqrt(2), -1/2*sqrt(2)], [1, 1/2*sqrt(2), -1/2*sqrt(2)], [1, -1/2*sqrt(2), 1/2*sqrt(2)], [1, 1/2*sqrt(2), 1/2*sqrt(2)], [1, -1/2*sqrt(2), 0], [1, 1/2*sqrt(2), 0], [1, 0, 0], [1, 0, -1/2*sqrt(2)], [1, 0, 1/2*sqrt(2)], [-1, 0, 1], [0, -1, 1], [0, 1, 1], [-1/2*sqrt(2), 0, 1], [1/2*sqrt(2), 0, 1], [0, 0, 1], [0, -1/2*sqrt(2), 1], [0, 1/2*sqrt(2), 1], [-1/2*sqrt(2), -1/2*sqrt(2), 1], [1/2*sqrt(2), -1/2*sqrt(2), 1], [-1/2*sqrt(2), 1/2*sqrt(2), 1], [1/2*sqrt(2), 1/2*sqrt(2), 1], [-1, 1, 0], [-1/2*sqrt(2), 1, 0], [1/2*sqrt(2), 1, 0], [0, 1, 0], [-1/2*sqrt(2), 1, 1/2*sqrt(2)], [-1/2*sqrt(2), 1, -1/2*sqrt(2)], [1/2*sqrt(2), 1, 1/2*sqrt(2)], [1/2*sqrt(2), 1, -1/2*sqrt(2)], [0, 1, -1/2*sqrt(2)], [0, 1, 1/2*sqrt(2)]]
 
@@ -8,199 +8,89 @@ T=[[[1, 0, 1], [-1, 0, 1], [0, 1, 0]], [[1, 0, 1], [-1/2*sqrt(2), 1, 1/2*sqrt(2)
 
 P=[[[1, 0, 1], [-1, 0, 1]], [[1, 0, 1], [0, 1, 0]], [[1, 0, 1], [-1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[1, 0, 1], [1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[1, 1, 0], [0, 0, 1]], [[1, 1, 0], [1/2*sqrt(2), -1/2*sqrt(2), 1]], [[1, 1, 0], [-1/2*sqrt(2), 1/2*sqrt(2), 1]], [[1, 1, 0], [-1, 1, 0]], [[1, -1/2*sqrt(2), -1/2*sqrt(2)], [1, 1/2*sqrt(2), 1/2*sqrt(2)]], [[1, -1/2*sqrt(2), -1/2*sqrt(2)], [0, -1, 1]], [[1, -1/2*sqrt(2), -1/2*sqrt(2)], [1/2*sqrt(2), 0, 1]], [[1, -1/2*sqrt(2), -1/2*sqrt(2)], [1/2*sqrt(2), 1, 0]], [[1, 1/2*sqrt(2), -1/2*sqrt(2)], [1, -1/2*sqrt(2), 1/2*sqrt(2)]], [[1, 1/2*sqrt(2), -1/2*sqrt(2)], [0, 1, 1]], [[1, 1/2*sqrt(2), -1/2*sqrt(2)], [1/2*sqrt(2), 0, 1]], [[1, 1/2*sqrt(2), -1/2*sqrt(2)], [-1/2*sqrt(2), 1, 0]], [[1, -1/2*sqrt(2), 1/2*sqrt(2)], [0, 1, 1]], [[1, -1/2*sqrt(2), 1/2*sqrt(2)], [-1/2*sqrt(2), 0, 1]], [[1, -1/2*sqrt(2), 1/2*sqrt(2)], [1/2*sqrt(2), 1, 0]], [[1, 1/2*sqrt(2), 1/2*sqrt(2)], [0, -1, 1]], [[1, 1/2*sqrt(2), 1/2*sqrt(2)], [-1/2*sqrt(2), 0, 1]], [[1, 1/2*sqrt(2), 1/2*sqrt(2)], [-1/2*sqrt(2), 1, 0]], [[1, -1/2*sqrt(2), 0], [0, 0, 1]], [[1, -1/2*sqrt(2), 0], [1/2*sqrt(2), 1, 0]], [[1, -1/2*sqrt(2), 0], [1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[1, -1/2*sqrt(2), 0], [1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[1, 1/2*sqrt(2), 0], [0, 0, 1]], [[1, 1/2*sqrt(2), 0], [-1/2*sqrt(2), 1, 0]], [[1, 1/2*sqrt(2), 0], [-1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[1, 1/2*sqrt(2), 0], [-1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[1, 0, 0], [0, -1, 1]], [[1, 0, 0], [0, 1, 1]], [[1, 0, 0], [0, 0, 1]], [[1, 0, 0], [0, -1/2*sqrt(2), 1]], [[1, 0, 0], [0, 1/2*sqrt(2), 1]], [[1, 0, 0], [0, 1, 0]], [[1, 0, 0], [0, 1, -1/2*sqrt(2)]], [[1, 0, 0], [0, 1, 1/2*sqrt(2)]], [[1, 0, -1/2*sqrt(2)], [1/2*sqrt(2), 0, 1]], [[1, 0, -1/2*sqrt(2)], [1/2*sqrt(2), -1/2*sqrt(2), 1]], [[1, 0, -1/2*sqrt(2)], [1/2*sqrt(2), 1/2*sqrt(2), 1]], [[1, 0, -1/2*sqrt(2)], [0, 1, 0]], [[1, 0, 1/2*sqrt(2)], [-1/2*sqrt(2), 0, 1]], [[1, 0, 1/2*sqrt(2)], [-1/2*sqrt(2), -1/2*sqrt(2), 1]], [[1, 0, 1/2*sqrt(2)], [-1/2*sqrt(2), 1/2*sqrt(2), 1]], [[1, 0, 1/2*sqrt(2)], [0, 1, 0]], [[-1, 0, 1], [0, 1, 0]], [[-1, 0, 1], [-1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[-1, 0, 1], [1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[0, -1, 1], [0, 1, 1]], [[-1/2*sqrt(2), 0, 1], [0, 1, 0]], [[1/2*sqrt(2), 0, 1], [0, 1, 0]], [[0, 0, 1], [-1, 1, 0]], [[0, 0, 1], [-1/2*sqrt(2), 1, 0]], [[0, 0, 1], [1/2*sqrt(2), 1, 0]], [[0, 0, 1], [0, 1, 0]], [[0, -1/2*sqrt(2), 1], [-1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[0, -1/2*sqrt(2), 1], [1/2*sqrt(2), 1, 1/2*sqrt(2)]], [[0, -1/2*sqrt(2), 1], [0, 1, 1/2*sqrt(2)]], [[0, 1/2*sqrt(2), 1], [-1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[0, 1/2*sqrt(2), 1], [1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[0, 1/2*sqrt(2), 1], [0, 1, -1/2*sqrt(2)]], [[-1/2*sqrt(2), -1/2*sqrt(2), 1], [1/2*sqrt(2), 1/2*sqrt(2), 1]], [[-1/2*sqrt(2), -1/2*sqrt(2), 1], [-1, 1, 0]], [[-1/2*sqrt(2), -1/2*sqrt(2), 1], [0, 1, 1/2*sqrt(2)]], [[1/2*sqrt(2), -1/2*sqrt(2), 1], [-1/2*sqrt(2), 1/2*sqrt(2), 1]], [[1/2*sqrt(2), -1/2*sqrt(2), 1], [0, 1, 1/2*sqrt(2)]], [[-1/2*sqrt(2), 1/2*sqrt(2), 1], [0, 1, -1/2*sqrt(2)]], [[1/2*sqrt(2), 1/2*sqrt(2), 1], [-1, 1, 0]], [[1/2*sqrt(2), 1/2*sqrt(2), 1], [0, 1, -1/2*sqrt(2)]], [[-1/2*sqrt(2), 1, 1/2*sqrt(2)], [1/2*sqrt(2), 1, -1/2*sqrt(2)]], [[-1/2*sqrt(2), 1, -1/2*sqrt(2)], [1/2*sqrt(2), 1, 1/2*sqrt(2)]]]
 
+# --- Build group of cube rotations ---
 
+# Precompute symmetric pairs ±d
+Ds = [[d, [-d[0], -d[1], -d[2]]] for d in D]
 
-# On code toutes les rotations possibles
+# Build generators DRx, DRy, DRz
+def find_rotation_map(rot_formula):
+    """
+    Build rotation mapping {d -> rot(d)} using Ds for identification
+    """
+    mapping = []
+    for d in D:
+        rotated = rot_formula(d)
+        for ds in Ds:
+            if rotated in ds:  # identify with D or -D
+                mapping.append([d, ds[0]])  # map to representative in D
+    return mapping
 
-rotations=[]
-x=y=z=0 # Initialisation
-while(x<4):
-    y=0
-    while(y<4):
-        z=0
-        while(z<4):
-            rotations.append([x,y,z])
-            z=z+1
-        y=y+1
-    x=x+1
+# Rotation formulas
+DRz = find_rotation_map(lambda d: [-d[1], d[0], d[2]])   # rotation pi/2 about z
+DRy = find_rotation_map(lambda d: [d[2], d[1], -d[0]])   # rotation pi/2 about y
+DRx = find_rotation_map(lambda d: [d[0], -d[2], d[1]])   # rotation pi/2 about x
 
-# On crée maintenant l'ensemble des symétriques
+def composition(ga, gb):
+    """Compose two maps ga, gb (both lists of [point, image])"""
+    result = []
+    for d in D:
+        img = [pair[1] for pair in gb if pair[0] == d][0]
+        img2 = [pair[1] for pair in ga if pair[0] == img][0]
+        result.append([d, img2])
+    return result
 
-Ds = []
-for i in range (len(D)): # Et on crée Ds
-    Ds.append([D[i],[-D[i][0],-D[i][1],-D[i][2]]])
+def rot(rotation):
+    """Return map corresponding to rotation [x,y,z] (quarter turns about x,y,z)"""
+    imD = [[d, d] for d in D]  # identity
+    for _ in range(rotation[0]): imD = composition(DRx, imD)
+    for _ in range(rotation[1]): imD = composition(DRy, imD)
+    for _ in range(rotation[2]): imD = composition(DRz, imD)
+    return imD
 
-# On définit les 3 rotations qui vont générer le groupe des rotations
-
-DRz=[] # rotation de pi/4 selon l'axe z des d dans D
-DRy=[] # rotation de pi/4 selon l'axe y des d dans D
-DRx=[] # rotation de pi/4 selon l'axe x des d dans D
-# On utilise ici la structure ensembliste d'une application
-# Les éléments sont des couples [d, DRx(d)]
-
-for i in range(len(D)):
-    point=[-(D[i][1]),(D[i][0]),(D[i][2])] # Formules de rotations simples
-    for ii in range(len(Ds)):
-        if point in Ds[ii]:
-            DRz.append([D[i],D[ii]]) # couple [d, DRz(d)]
-    point=[(D[i][2]),(D[i][1]),-(D[i][0])] # Formules de rotations simples
-    for ii in range(len(Ds)):
-        if point in Ds[ii]:
-            DRy.append([D[i],D[ii]]) # couple [d, DRy(d)]
-    point=[(D[i][0]),(-D[i][2]),(D[i][1])] # Formules de rotations simples
-    for ii in range(len(Ds)):
-        if point in Ds[ii]:
-            DRx.append([D[i],D[ii]]) # couple [d, DRx(d)]
-
-def composition(ga, gb): # On définit l'opération du futur groupe G, ici ga et gb sont 2 éléments de G, on renvoie ga.gb (composition)
-    composee=[]
-    imagega=[]
-    antecedantga=[]
-    imagegb=[]
-    antecedantgb=[]
-    for i in range(len(gb)):
-        imagegb.append(gb[i][1])
-        antecedantgb.append(gb[i][0])
-        imagega.append(ga[i][1])
-        antecedantga.append(ga[i][0])
-    for i in range(len(D)):
-        if D[i] in antecedantgb:
-            composee.append([D[i],imagega[antecedantga.index(imagegb[antecedantgb.index(D[i])])]]) # d'abord gb puis ga
-    return(composee)
-
-def rot(rotation): # On définit une fonction, qui a une rotation codée [x, y, z] associe un ensemble qui correspond à une application, élément du groupe G
-    imD=[]
-    for i in range(len(D)):
-        imD.append([D[i],D[i]]) # ce qui deviendra notre element neutre
-    for i in range(rotation[0]):
-        imD=composition(DRx,imD)
-    for i in range(rotation[1]):
-        imD=composition(DRy,imD)
-    for i in range(rotation[2]):
-        imD=composition(DRz,imD)
-    return(imD) # on retourne une application de D vers D, c'est à dire un ensemble de paires de p et p' dans D
-    
-G=[] # G sera le groupe des rotations qu'on s'efforce de construire
-g=[] # g un élément de G, c'est à dire une application de D vers D, c'est-à-dire un ensemble de paires de p et p' dans D
-for i in range(len(rotations)):
-    g=rot(rotations[i])
-    if not g in G : # On ne met dans G que les g qui n'y sont pas encore 
+# Generate group G
+rotations = [(x,y,z) for x in range(4) for y in range(4) for z in range(4)]
+G = []
+for r in rotations:
+    g = rot(r)
+    if g not in G:
         G.append(g)
-print("On a trouve ",len(G)," isometries positives") # Le programme retourne 24 ; on a bien trouvé l'ensemble des 24 isométries positives du cube.
+
+print("We found", len(G), "positive isometries (rotations).")  # Expect 24
 
 
+# --- Generic orbit computation ---
 
-# On cherche maintenant à trouver les orbites de D sous l'action de G:
-def Phi(g, p):# On définit la fonction qui fait agir G sur D
-    for i in range(len(g)):
-        if g[i][0]==p:
-            return(g[i][1])
+def orbit_action(G, objects, action):
+    """
+    Compute orbits of `objects` under group action.
+    action(g, obj) applies element g to object obj.
+    """
+    orbits = []
+    seen = []
+    for obj in objects:
+        if obj not in seen:
+            orbit = []
+            for g in G:
+                image = action(g, obj)
+                if image not in orbit:
+                    orbit.append(image)
+            orbits.append(orbit)
+            seen.extend(orbit)
+    return orbits
 
-for i in range(len(D)): # On teste la première condition
-    if Phi(G[0],D[i])!=D[i]:
-        print("OULALALALALALALA (i)",Phi(G[0],D[i]),"   ",D[i])
-        
+# Actions on D, T, P
+def act_on_point(g, d):
+    return [pair[1] for pair in g if pair[0] == d][0]
 
-for i in range(len(G)): # On teste la deuxième condition
-    for ii in range(len(G)):
-        for iii in range(len(D)):
-            if Phi(composition(G[i],G[ii]),D[iii])!=Phi(G[i],Phi(G[ii],D[iii])):
-                print("OULALALALALALALA (ii)",Phi(composition(G[i],G[ii]),D[iii]),"   ",Phi(G[i],Phi(G[ii],D[iii])))
-# Le programme n'affiche aucun 'OULALALALALALALA', notre fonction Phi définit bien une action de groupe !!!!
+def act_on_tuple(g, tup):
+    return [act_on_point(g, d) for d in tup]
 
-orbitesMultiples=[]
-for i in range(len(D)):
-    orbitesMultiples.append([])
-for i in range(len(D)):
-    for ii in range(len(D)):
-        for iii in range(len(G)):
-            if Phi(G[iii],D[ii])==D[i]:
-                if not D[ii] in orbitesMultiples[i]:
-                    orbitesMultiples[i].append(D[ii])
+# Compute orbits
+orbitsD = orbit_action(G, D, act_on_point)
+orbitsT = orbit_action(G, T, act_on_tuple)
+orbitsP = orbit_action(G, P, act_on_tuple)
 
-orbitesD=[]
-for i in range(len(orbitesMultiples)):
-    if not orbitesMultiples[i] in orbitesD:
-        orbitesD.append(orbitesMultiples[i])
-
-print("il y a ",len(orbitesD)," orbites")
-
-
-
-# On cherche maintenant à trouver les orbites de T sous l'action de G:
-def Xhi(g, t):# On définit la fonction qui fait agir G sur T
-    imaget=[[],[],[]]
-    for i in range(len(g)):
-        if g[i][0]==t[0]:
-            imaget[0]=g[i][1]
-    for i in range(len(g)):
-        if g[i][0]==t[1]:
-            imaget[1]=g[i][1]
-    for i in range(len(g)):
-        if g[i][0]==t[2]:
-            imaget[2]=g[i][1]
-    return(imaget)
-    
-for i in range(len(T)):
-    if Xhi(G[0],T[i])!=T[i]:
-        print("OULULULULULULU (i)",Xhi(G[0],T[i]),"   ",T[i])
-        
-for i in range(len(G)):
-    for ii in range(len(G)):
-        for iii in range(len(T)):
-            if Xhi(composition(G[i],G[ii]),T[iii])!=Xhi(G[i],Xhi(G[ii],T[iii])):
-                print("OULULULULULULU (ii)",Xhi(composition(G[i],G[ii]),T[iii]),"   ",Xhi(G[i],Xhi(G[ii],T[iii])))
-# Le programme n'affiche aucun 'OULULULULULULU', notre fonction Xhi définit bien une action de groupe !!!!
-orbitesMultiples=[]
-for i in range(len(T)):
-    orbitesMultiples.append([])
-for i in range(len(T)):
-    for ii in range(len(T)):
-        for iii in range(len(G)):
-            if Xhi(G[iii],T[ii])==T[i]:
-                if not T[ii] in orbitesMultiples[i]:
-                    orbitesMultiples[i].append(T[ii])
-
-orbitesT=[]
-for i in range(len(orbitesMultiples)):
-    if not orbitesMultiples[i] in orbitesT:
-        orbitesT.append(orbitesMultiples[i])
-print("il y a ",len(orbitesT)," orbites des triplets")
-
-
-
-def Psi(g, d):# On définit la fonction qui fait agir G sur P
-    imaged=[[],[]]
-    for i in range(len(g)):
-        if g[i][0]==d[0]:
-            imaged[0]=g[i][1]
-    for i in range(len(g)):
-        if g[i][0]==d[1]:
-            imaged[1]=g[i][1]
-    return(imaged)
-    
-for i in range(len(P)):
-    if Psi(G[0],P[i])!=P[i]:
-        print("OULOLOLOLOLOLO (i)",Psi(G[0],P[i]),"   ",P[i])
-        
-for i in range(len(G)):
-    for ii in range(len(G)):
-        for iii in range(len(P)):
-            if Psi(composition(G[i],G[ii]),P[iii])!=Psi(G[i],Psi(G[ii],P[iii])):
-                print("OULOLOLOLOLOLO (ii)",Psi(composition(G[i],G[ii]),P[iii]),"   ",Psi(G[i],Psi(G[ii],P[iii])))
-# Le programme n'affiche aucun 'OULOLOLOLOLOLO', notre fonction Psi définit bien une action de groupe !!!!
-orbitesMultiples=[]
-for i in range(len(P)):
-    orbitesMultiples.append([])
-for i in range(len(P)):
-    for ii in range(len(P)):
-        for iii in range(len(G)):
-            if Psi(G[iii],P[ii])==P[i]:
-                if not P[ii] in orbitesMultiples[i]:
-                    orbitesMultiples[i].append(P[ii])
-
-orbitesP=[]
-for i in range(len(orbitesMultiples)):
-    if not orbitesMultiples[i] in orbitesP:
-        orbitesP.append(orbitesMultiples[i])
-print("il y a ",len(orbitesP)," orbites des doublets")
+print("Number of orbits on D:", len(orbitsD))
+print("Number of orbits on T:", len(orbitsT))
+print("Number of orbits on P:", len(orbitsP))
