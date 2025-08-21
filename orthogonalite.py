@@ -5,18 +5,45 @@ Created on Fri Nov 24 23:48:52 2023
 @author: yan-s
 """
 
-from numpy import isclose
+import numpy as np
 
-def orthogonalite(*arg):
-    """ u​⃗​​.​v​⃗​​=xx​′​​x′′... + ... + nn​′n′′...​​ """
-    # Vérifie s'il y a au moins 2 vecteurs, et qu'ils soient de même taille
-    if all([True if len(i) == len(arg[0]) else False for i in arg]) and len(arg) >= 2:
-        somme = 0    
-        for i in range(len(arg[0])):
-            facteur = 1
-            for ii in arg:
-                facteur *= ii[i]
-            somme += facteur            
-        if isclose(somme, 0, rtol=1e-05, atol=1e-08, equal_nan=False):return True
-        else:return False
-    else:raise Exception('Vecteurs de tailles différentes !')
+def is_orthogonal(*vectors, rtol=1e-5, atol=1e-8):
+    """
+    Check generalized orthogonality of two or more vectors.
+
+    Definition:
+        For vectors u, v, w, ... in R^n:
+        sum = Σ (u_i * v_i * w_i * ...)
+        If sum ≈ 0, return True.
+
+    - For 2 vectors: reduces to standard dot product.
+    - For 3+ vectors: generalized "n-orthogonality".
+
+    Parameters
+    ----------
+    *vectors : list of lists or numpy arrays
+        Input vectors, all must have the same dimension.
+    rtol : float
+        Relative tolerance for zero-check (default=1e-5).
+    atol : float
+        Absolute tolerance for zero-check (default=1e-8).
+
+    Returns
+    -------
+    bool
+        True if generalized inner product is close to 0, else False.
+
+    Raises
+    ------
+    ValueError
+        If vectors have different dimensions or fewer than 2.
+    """
+    if len(vectors) < 2:
+        raise ValueError("At least two vectors are required.")
+
+    arr = np.array(vectors, dtype=float)
+    if arr.ndim != 2:
+        raise ValueError("Invalid input: all vectors must have same dimension.")
+
+    result = np.sum(np.prod(arr, axis=0))
+    return np.isclose(result, 0.0, rtol=rtol, atol=atol)
